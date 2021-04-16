@@ -1,0 +1,22 @@
+/*
+simple test using "assertEqual" method from Python's TestCase library checking if:
+the properties of 'p' (Post class) are equal to current values of those properties: "Test", "Test Content"
+*/
+
+post.py - simple class definition
+
+class Post:
+    def __init__(self, title, content):
+        self.title = title
+        self.content = content
+        
+post_test.py - simple test
+
+from unittest import TestCase
+from post import Post
+class PostTest (TestCase):
+    def test_create_post(self):
+        p = Post("Test", "Test Content")
+
+        self.assertEqual("Test", p.title)
+        self.assertEqual("Test Content", p.content)
