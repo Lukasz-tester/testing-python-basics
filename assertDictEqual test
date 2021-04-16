@@ -1,0 +1,30 @@
+# simple test using 'assertDictEqual' method from Python's TestCase library checking if:
+# the Post class dictionary 'p.json' is equal to the expected dictionary {'title': 'Test', 'content': 'Test Content'}
+
+# post.py - class definition file
+
+class Post:
+    def __init__(self, title, content):
+        self.title = title
+        self.content = content
+
+    def json(self):
+        return {
+            'title': self.title,
+            'content': self.content,
+        }
+        
+# post_dict_test.py - dictionary testing file
+
+from unittest import TestCase
+from post import Post
+
+class PostTest (TestCase):
+
+    def test_json (self):
+        p = Post('Test', 'Test Content')
+        expected = {'title': 'Test', 'content': 'Test Content'}
+
+        self.assertDictEqual(expected, p.json())
+        
+# expected execiution result: 'Process finished with exit code 0'
