@@ -1,0 +1,25 @@
+# simple test using 'assertListEqual' method from Python's TestCase library checking if:
+# the Blog class 'b' is equal to the expected values - one of them is a list
+
+# blog.py - class definition file
+
+class Blog:
+    def __init__(self, title, author):
+        self.title = title
+        self.author = author
+        self.posts = []
+        
+# blog_list_test.py - list & values testing file
+
+from unittest import TestCase
+from blog import Blog
+
+class BlogTest (TestCase):
+    def test_create_blog (self):
+        b = Blog('Test', 'Test Author')
+
+        self.assertEqual('Test', b.title)
+        self.assertEqual('Test Author', b.author)
+        self.assertListEqual([], b.posts)     #other options: self.assertEqual(len([]), len(b.posts))
+        
+# expected execiution result: 'Process finished with exit code 0'
