@@ -1,4 +1,4 @@
-# Post class def. in post.py
+# Post class def. in file: post.py
 
 class Post:
     def __init__(self, title, content):
