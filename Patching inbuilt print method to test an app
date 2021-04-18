@@ -1,0 +1,78 @@
+from unittest import TestCase
+# patch let's us change the actions of the examined thing
+# e.g. we can patch our app and change its method
+from unittest.mock import patch
+import app
+from blog import Blog
+
+class AppTest(TestCase):
+    # We need to patch the print method to actually test the printed values
+    def test_print_blogs(self):
+        # The blog object is created
+        blog = Blog('Test', 'Test Author')
+        # app.blogs variable is set to be a dict. with single blog
+        app.blogs = {'Test': blog}
+        # The builtin print method is patched = it's replaced by a mock, which gives us helpers and let's us see:
+        # - weather the method was called
+        # - what arguments it was called with...
+        with patch('builtins.print') as mocked_print:
+            app.print_blogs()
+            mocked_print.assert_called_with('- Test by Test Author (0 posts)')
+
+
+# File: app.py (simple blogging application)
+
+# An empty dictionary is created ("blogs = {}" would work, but it could be a set instead)
+blogs = dict()  # blog_name : Blog object
+
+def menu():
+    # Show the user available blogs = print them
+
+    print_blogs()
+
+def print_blogs():
+    # The method items() returns a list of dict's (key, value) tuple pairs
+    # e.g. blogs.items() = [(blog_name, Blog object), (blog_name2, Blog object 2)...]
+    for key, blog in blogs.items():
+        print('- {}'.format(blog))
+
+
+# File: blog.py (Blog class)
+
+from post import Post
+
+class Blog:
+    def __init__(self, title, author):
+        self.title = title
+        self.author = author
+        self.posts = []
+
+    def __repr__(self):
+        return "{} by {} ({} post{})".format(self.title,
+                                             self.author,
+                                             len(self.posts),
+                                             's' if len(self.posts) != 1 else '')
+
+    def create_post(self, title, content):
+        self.posts.append(Post(title, content))
+
+    def json(self):
+        return {
+            'title': self.title,
+            'author': self.author,
+            'posts': [post.json() for post in self.posts]
+        }
+
+
+# File: post.py (Post class)
+
+class Post:
+    def __init__(self, title, content):
+        self.title = title
+        self.content = content
+
+    def json(self):
+        return {
+            'title': self.title,
+            'content': self.content,
+        }
